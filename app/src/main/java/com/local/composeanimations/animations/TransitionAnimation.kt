@@ -1,16 +1,20 @@
 package com.local.composeanimations.animations
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,6 +35,7 @@ fun TransitionAnimationApi() {
         textAlign = TextAlign.Center
     )
     ComposeLogoComponent()
+    AnimatedState()
 }
 
 @Composable
@@ -74,6 +79,61 @@ fun ComposeLogoComponent() {
                 useCenter = false,
                 style = Stroke(12f)
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun AnimatedState() {
+    Text(
+        text = "animate*AsState()",
+        style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold, color = Color.DarkGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp, bottom = 4.dp),
+        textAlign = TextAlign.Center
+    )
+    var paid by remember {
+        mutableStateOf(false)
+    }
+    val width = animateDpAsState(
+        targetValue = if (paid) 40.dp else 120.dp
+    )
+    val color = animateColorAsState(
+        targetValue = if (paid) Color.Green else Color.Blue
+    )
+
+    Card(
+        modifier = Modifier
+            .padding(vertical = 4.dp, horizontal = 16.dp)
+            .size(width = width.value, height = 40.dp),
+        shape = CircleShape,
+        backgroundColor = color.value
+    ) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .clickable {
+                    paid = !paid
+                },
+        contentAlignment = Alignment.Center) {
+            AnimatedVisibility(visible = paid.not()) {
+                Text(
+                    text = "Pay",
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold, color = Color.White),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            AnimatedVisibility(visible = paid) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
         }
     }
 }

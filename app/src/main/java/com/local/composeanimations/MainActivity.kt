@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.local.composeanimations.animations.AnimationsWithVisibilityApi
+import com.local.composeanimations.animations.SuspendingAnimationApi
 import com.local.composeanimations.animations.TransitionAnimationApi
 import com.local.composeanimations.ui.theme.ComposeAnimationsTheme
 
@@ -73,6 +74,7 @@ fun AnimationScreen() {
         item { Spacer(modifier = Modifier.padding(4.dp)) }
         item { Divider(thickness = 24.dp) }
         item { Spacer(modifier = Modifier.padding(4.dp)) }
+        item { SuspendingAnimationApi() }
         item { Spacer(modifier = Modifier.padding(100.dp)) }
     }
 }

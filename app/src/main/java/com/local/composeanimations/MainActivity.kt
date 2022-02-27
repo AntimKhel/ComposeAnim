@@ -75,7 +75,9 @@ fun AnimationScreen() {
         item { Divider(thickness = 24.dp) }
         item { Spacer(modifier = Modifier.padding(4.dp)) }
         item { SuspendingAnimationApi() }
-        item { Spacer(modifier = Modifier.padding(100.dp)) }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
+        item { Divider(thickness = 24.dp) }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
     }
 }
 

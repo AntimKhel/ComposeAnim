@@ -1,8 +1,11 @@
 package com.local.composeanimations.animations
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -26,7 +29,7 @@ fun AnimationsWithVisibilityApi() {
         textAlign = TextAlign.Center
     )
     AnimateVisibilityAnim()
-
+    CrossFadeAnim()
 }
 
 
@@ -34,19 +37,20 @@ fun AnimationsWithVisibilityApi() {
 @Composable
 fun AnimateVisibilityAnim() {
     Text(
-        text = "AnimateVisibility()",
+        text = "AnimateVisibility() and animateContentSize()",
         style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold, color = Color.DarkGray),
-        modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
         textAlign = TextAlign.Center
     )
     var expanded by remember { mutableStateOf(false) }
     var sText by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(key1 = expanded) {
-
+    LaunchedEffect(key1 = expanded, key2 = sText) {
         delay(2000)
-        if (expanded) {
+        if (expanded or sText) {
             expanded = false
             sText = false
         }
@@ -94,6 +98,46 @@ fun AnimateVisibilityAnim() {
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun CrossFadeAnim() {
+    Text(
+        text = "Crossfade()",
+        style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold, color = Color.DarkGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp),
+        textAlign = TextAlign.Center
+    )
+
+    val color = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Cyan, Color.Magenta, Color.DarkGray)
+    var tint by remember {
+        mutableStateOf(Color.Red)
+    }
+
+    LaunchedEffect(key1 = tint) {
+        delay(1500)
+        tint = color.filter {
+            it != tint
+        }.random()
+    }
+
+    Crossfade(
+        targetState = tint,
+        animationSpec = tween(
+            durationMillis = 1000
+        )
+    ) {
+        Box(modifier = Modifier) {
+            Icon(
+                painter = painterResource(id = R.drawable.img),
+                modifier = Modifier.size(100.dp),
+                tint = it,
+                contentDescription = null
+            )
         }
     }
 }

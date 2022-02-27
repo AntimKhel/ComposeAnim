@@ -4,8 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -49,7 +48,7 @@ fun AnimateVisibilityAnim() {
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = expanded, key2 = sText) {
-        delay(2000)
+        delay(1000)
         if (expanded or sText) {
             expanded = false
             sText = false

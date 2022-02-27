@@ -3,7 +3,6 @@ package com.local.composeanimations
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -71,6 +70,9 @@ fun AnimationScreen() {
         item { Divider(thickness = 24.dp) }
         item { Spacer(modifier = Modifier.padding(4.dp)) }
         item { TransitionAnimationApi() }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
+        item { Divider(thickness = 24.dp) }
+        item { Spacer(modifier = Modifier.padding(4.dp)) }
         item { Spacer(modifier = Modifier.padding(100.dp)) }
     }
 }

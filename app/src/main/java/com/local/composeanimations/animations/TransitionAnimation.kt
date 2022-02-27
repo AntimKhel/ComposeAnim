@@ -2,18 +2,17 @@ package com.local.composeanimations.animations
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +35,7 @@ fun TransitionAnimationApi() {
     )
     ComposeLogoComponent()
     AnimatedState()
+    LikeButton()
 }
 
 @Composable
@@ -135,5 +135,54 @@ fun AnimatedState() {
                 )
             }
         }
+    }
+}
+
+private enum class LikedState { Liked, Unliked }
+
+private const val LikedLabel = "liked"
+
+@Composable
+fun LikeButton(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = "updateTransition()",
+        style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold, color = Color.DarkGray),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 24.dp, bottom = 4.dp),
+        textAlign = TextAlign.Center
+    )
+
+    var isLiked by remember {
+        mutableStateOf(false)
+    }
+    val likedState = if (isLiked) LikedState.Liked else LikedState.Unliked
+    val transition = updateTransition(likedState, label = LikedLabel)
+    val colour by transition.animateColor(label = LikedLabel) { state ->
+        when (state) {
+            LikedState.Liked -> Color.Red
+            LikedState.Unliked -> Color.Gray
+        }
+    }
+    val size by transition.animateDp(label = LikedLabel) { state ->
+        when (state) {
+            LikedState.Liked -> 36.dp
+            LikedState.Unliked -> 24.dp
+        }
+    }
+
+    IconToggleButton(
+        checked = isLiked,
+        onCheckedChange = { isLiked = !isLiked },
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Favorite,
+            contentDescription = "",
+            tint = colour,
+            modifier = Modifier.size(size)
+        )
     }
 }
